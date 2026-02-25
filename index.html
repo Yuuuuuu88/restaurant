@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>食在中原</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #ff5722;
+      margin-bottom: -10px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      width: 300px;
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .divider {
+      height: 4px;
+      background: #eee;
+      margin: 20px 0;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .card {
+      position: relative;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-info {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .card-info h3 {
+      margin: 6px 0;
+      font-size: 1.1rem;
+    }
+
+    .card-info p {
+      margin: 4px 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .heart {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    /* AI 按鈕 */
+    #aiBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ff5722;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    #aiChat {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 300px;
+      max-height: 400px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      padding: 10px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    #aiChat textarea {
+      width: 100%;
+      height: 60px;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 6px;
+    }
+
+    #aiChat button {
+      padding: 6px 12px;
+      border: none;
+      background-color: #ff5722;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #aiOutput {
+      text-align: left;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>食在中原</h1>
+  <p class="subtitle">關於中原附近的美食餐廳</p>
+
+  <input
+    id="search"
+    class="search-input"
+    placeholder="搜尋餐廳名稱或地址..."
+  />
+
+  <div class="divider"></div>
+
+  <!-- 餐廳卡片會由 app.js 動態產生 -->
+  <div id="cards" class="card-container"></div>
+
+  <!-- AI 懸浮按鈕 -->
+  <button id="aiBtn">🤖</button>
+
+  <div id="aiChat">
+    <textarea id="aiInput" placeholder="問我餐廳建議..."></textarea>
+    <button id="aiSend">送出</button>
+    <div id="aiOutput"></div>
+  </div>
+
+  <!-- ✅ 前端邏輯統一交給 app.js -->
+  <script src="app.js"></script>
+
+  <!-- AI 小功能（純前端，不影響主流程） -->
+  <script>
+    const aiBtn = document.getElementById("aiBtn");
+    const aiChat = document.getElementById("aiChat");
+    const aiInput = document.getElementById("aiInput");
+    const aiSend = document.getElementById("aiSend");
+    const aiOutput = document.getElementById("aiOutput");
+
+    aiBtn.onclick = () => {
+      aiChat.style.display =
+        aiChat.style.display === "none" ? "block" : "none";
+    };
+
+    aiSend.onclick = () => {
+      const question = aiInput.value.trim();
+      if (!question) return;
+
+      let reply = "🤖 我建議你可以試試：附近熱門餐廳都不錯喔！";
+
+      aiOutput.innerHTML += `
+        <p><strong>Q:</strong> ${question}</p>
+        <p><strong>A:</strong> ${reply}</p>
+        <hr>
+      `;
+
+      aiInput.value = "";
+      aiOutput.scrollTop = aiOutput.scrollHeight;
+    };
+  </script>
+
+</body>
+</html>
